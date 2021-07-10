@@ -126,8 +126,7 @@ int tmpsize;
 
 void
 iterate() {
-	tmp =  (todo *)malloc(0 * sizeof(todo));
-	tmpsize=1;
+	tmpsize=0;
 	int n;
 	for(int i = 0; i<BOX_SIZE;i++) {
 		for(int k=0;k<BOX_SIZE;k++){
@@ -136,10 +135,9 @@ iterate() {
 				if(!(n==2 || n==3)) {
 					/* printf("Death at(%d,%d)\tNeighbors:(%d)\n",i,k,n); */
 					/* *acs(i,k) = 0; */
-					tmp = realloc(tmp,tmpsize*sizeof(todo));
-					tmp[tmpsize-1].x = i;
-					tmp[tmpsize-1].y = k;
-					tmp[tmpsize-1].to = 0;
+					tmp[tmpsize].x = i;
+					tmp[tmpsize].y = k;
+					tmp[tmpsize].to = 0;
 					tmpsize++;
 				}
 
@@ -147,10 +145,9 @@ iterate() {
 				if(n == 3){
 					/* printf("Life at(%d,%d)\tNeighbors:(%d)\n",i,k,n); */
 					/* *acs(i,k) = 1; */
-					tmp = realloc(tmp,tmpsize*sizeof(todo));
-					tmp[tmpsize-1].x = i;
-					tmp[tmpsize-1].y = k;
-					tmp[tmpsize-1].to = 1;
+					tmp[tmpsize].x = i;
+					tmp[tmpsize].y = k;
+					tmp[tmpsize].to = 1;
 					tmpsize++;
 
 				}
@@ -158,11 +155,10 @@ iterate() {
 		}
 	}
 	printf("%dLEN\n",tmpsize);
-	for(int i = 0; i< tmpsize-1;i++) {
+	for(int i = 0; i< tmpsize;i++) {
 		*acs(tmp[i].x,tmp[i].y) = tmp[i].to;
 		/* printf("i->%d, x->%d, y->%d, to->%d\n",i,tmp[i].x,tmp[i].y,tmp[i].to); */
 	}
-	free(tmp);
 }
 
 
@@ -176,23 +172,26 @@ main(int argv, char **argc) {
 	SNEED = atoi(argc[2]);
 	BOX_SIZE = atoi(argc[1]);
 	box = (int *)malloc(BOX_SIZE*BOX_SIZE*sizeof(int));
+	tmp = (todo *)malloc(BOX_SIZE*BOX_SIZE*sizeof(todo));
 	struct timespec tim;
-	/* tim.tv_sec = 4; */
+	/* tim.tv_sec = 1; */
 	tim.tv_nsec = 50000000L;
 	/* tim.tv_nsec = 100000000L; */
 	/* tim.tv_nsec = 100000000L; */
 	/* randBox(); */
-	/* *acs(0,0)=1; */
-	/* *acs(1,1)=1; */
-	/* *acs(2,1)=1; */
-	/* *acs(0,2)=1; */
-	/* *acs(1,2)=1; */
-	randBox();
+	*acs(0,0)=1;
+	*acs(1,1)=1;
+	*acs(2,1)=1;
+	*acs(0,2)=1;
+	*acs(1,2)=1;
+	/* randBox(); */
 	/* showBox(); */
 	for(;;nanosleep(&tim,NULL)) {
 		showBox();
 		iterate();
 	}
+	free(tmp);
+	free(box);
 	return 0;
 }
 

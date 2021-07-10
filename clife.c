@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include <time.h>
 
+/*
+Todo: change acs to set, allocate tmp diff as the same size as box and just have an instruction counter instead of realloc each time.
+*/
 
 
 int BOX_SIZE;

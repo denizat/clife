@@ -97,21 +97,21 @@ neighbors(int x, int y)
 	int alive = 0;
 
 
-	if(fixed(x-1,y-1)==1)
+	if(fixed(x-1,y-1))
 		alive++;
-	if(fixed(x-1,y)==1)
+	if(fixed(x-1,y))
 		alive++;
-	if(fixed(x-1,y+1)==1)
+	if(fixed(x-1,y+1))
 		alive++;
-	if(fixed(x,y-1)==1)
+	if(fixed(x,y-1))
 		alive++;
-	if(fixed(x,y+1)==1)
+	if(fixed(x,y+1))
 		alive++;
-	if(fixed(x+1,y-1)==1)
+	if(fixed(x+1,y-1))
 		alive++;
-	if(fixed(x+1,y)==1)
+	if(fixed(x+1,y))
 		alive++;
-	if(fixed(x+1,y+1)==1)
+	if(fixed(x+1,y+1))
 		alive++;
 	return alive;
 }
@@ -131,18 +131,17 @@ iterate() {
 	for(int i = 0; i<BOX_SIZE;i++) {
 		for(int k=0;k<BOX_SIZE;k++){
 			n = neighbors(i,k);
-			if(view(i,k)) {
-				if(!(n==2 || n==3)) {
+			if(view(i,k) && !(n==2 || n==3)) {
+				/* if(!(n==2 || n==3)) { */
 					/* printf("Death at(%d,%d)\tNeighbors:(%d)\n",i,k,n); */
 					/* *acs(i,k) = 0; */
 					tmp[tmpsize].x = i;
 					tmp[tmpsize].y = k;
 					tmp[tmpsize].to = 0;
 					tmpsize++;
-				}
+				/* } */
 
-			} else {
-				if(n == 3){
+			} else if(n == 3){
 					/* printf("Life at(%d,%d)\tNeighbors:(%d)\n",i,k,n); */
 					/* *acs(i,k) = 1; */
 					tmp[tmpsize].x = i;
@@ -151,7 +150,7 @@ iterate() {
 					tmpsize++;
 
 				}
-			}
+
 		}
 	}
 	printf("%dLEN\n",tmpsize);
@@ -184,7 +183,7 @@ main(int argv, char **argc) {
 	*acs(2,1)=1;
 	*acs(0,2)=1;
 	*acs(1,2)=1;
-	/* randBox(); */
+	randBox();
 	/* showBox(); */
 	for(;;nanosleep(&tim,NULL)) {
 		showBox();
@@ -194,4 +193,3 @@ main(int argv, char **argc) {
 	free(box);
 	return 0;
 }
-
